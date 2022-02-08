@@ -6,6 +6,7 @@ require "ripper"
 require "stringio"
 
 require_relative "syntax_tree/version"
+require_relative "syntax_tree/yarv"
 
 # If PrettyPrint::Align isn't defined, then we haven't gotten the updated
 # version of prettyprint. In that case we'll define our own. This is going to

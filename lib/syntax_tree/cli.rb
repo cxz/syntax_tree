@@ -100,6 +100,28 @@ class SyntaxTree
       end
     end
 
+    # An action of the CLI that prints out the YARV bytecode for the given
+    # source.
+    class Disasm < Action
+      def run(filepath, source)
+        output = SyntaxTree.compile(source).inspect
+
+        puts "================================"
+        puts "========== SyntaxTree =========="
+        puts "================================"
+        puts
+        puts output
+
+        puts
+
+        puts "================================"
+        puts "============= Ruby ============="
+        puts "================================"
+        puts
+        puts RubyVM::InstructionSequence.compile(source).disasm
+      end
+    end
+
     # An action of the CLI that prints out the doc tree IR for the given source.
     class Doc < Action
       def run(filepath, source)
@@ -147,6 +169,9 @@ class SyntaxTree
 
       #{Color.bold("stree debug [FILE]")}
         Check that the given files can be formatted idempotently
+
+      #{Color.bold("stree disasm [FILE]")}
+        Print out the disassembly of the YARV bytecode for the given files
 
       #{Color.bold("stree doc [FILE]")}
         Print out the doc tree that would be used to format the given files
@@ -199,6 +224,8 @@ class SyntaxTree
             Check.new
           when "debug"
             Debug.new
+          when "disasm"
+            Disasm.new
           when "doc"
             Doc.new
           when "f", "format"
